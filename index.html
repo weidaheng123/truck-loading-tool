@@ -14,9 +14,24 @@
         
         /* === 顶部：本车信息栏 (固定) === */
         .top-bar { background: #263238; padding: 12px; border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 8px rgba(0,0,0,0.4); }
-        .trip-info { display: flex; gap: 10px; margin-bottom: 10px; }
+        .trip-info { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
         .input-box { flex: 1; background: #37474F; border: 1px solid #455A64; color: #fff; padding: 12px; border-radius: 8px; font-size: 1rem; font-weight: bold; outline: none; transition: border 0.2s; }
         .input-box:focus { border-color: var(--primary); background: #2f3e46; }
+        .input-box.small { flex: none; width: 120px; }
+        
+        /* 车辆切换栏 */
+        .truck-switcher { display: flex; gap: 8px; margin-bottom: 10px; overflow-x: auto; scrollbar-width: none; }
+        .truck-switcher::-webkit-scrollbar { display: none; }
+        .truck-tab { background: #37474F; border: 1px solid #455A64; color: #fff; padding: 8px 12px; border-radius: 20px; font-size: 0.8rem; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
+        .truck-tab.active { background: var(--primary); border-color: var(--primary); font-weight: bold; }
+        .truck-tab.new { background: #1b5e20; border-color: var(--success); }
+        
+        /* 客户切换栏 */
+        .customer-switcher { display: flex; gap: 8px; margin-bottom: 10px; overflow-x: auto; scrollbar-width: none; }
+        .customer-switcher::-webkit-scrollbar { display: none; }
+        .customer-tab { background: #37474F; border: 1px solid #455A64; color: #fff; padding: 8px 12px; border-radius: 20px; font-size: 0.8rem; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
+        .customer-tab.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: bold; }
+        .customer-tab.new { background: #1b5e20; border-color: var(--success); }
         
         /* 实时统计条 */
         .stats-scroller { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 4px; scrollbar-width: none; }
@@ -29,9 +44,9 @@
         .section { background: var(--panel); margin: 12px; padding: 15px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .section-title { color: #90A4AE; font-size: 0.9rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; }
         
-        /* 网格按钮 */
-        .grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .select-btn { background: #2c2c2c; border: 1px solid #444; color: #bbb; padding: 18px 8px; border-radius: 10px; text-align: center; font-size: 1rem; cursor: pointer; transition: all 0.1s; display: flex; align-items: center; justify-content: center; min-height: 50px; word-break: break-all; line-height: 1.3; }
+        /* 网格按钮 - 缩小图标到1/4 */
+        .grid-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+        .select-btn { background: #2c2c2c; border: 1px solid #444; color: #bbb; padding: 5px 3px; border-radius: 4px; text-align: center; font-size: 0.6rem; cursor: pointer; transition: all 0.1s; display: flex; align-items: center; justify-content: center; min-height: 20px; word-break: break-all; line-height: 1.1; }
         .select-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); font-weight: bold; transform: scale(1.02); box-shadow: 0 4px 10px rgba(41, 98, 255, 0.3); }
 
         /* 数量控制 */
@@ -50,8 +65,10 @@
 
         /* === 历史记录 === */
         .history-list { list-style: none; padding: 0; margin: 12px; padding-bottom: 20px; }
-        .history-item { background: #263238; border-radius: 8px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #546E7A; animation: slideIn 0.3s; }
+        .history-item { background: #263238; border-radius: 8px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #546E7A; animation: slideIn 0.3s; position: relative; }
         .history-item.recent { border-left-color: var(--success); background: #1b5e20; }
+        .history-item::before { content: ''; position: absolute; left: -10px; top: 50%; transform: translateY(-50%); background: #546E7A; color: #fff; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; }
+        .history-item.recent::before { background: var(--success); }
         @keyframes slideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
         /* === 弹窗 === */
@@ -84,8 +101,11 @@
 <!-- 顶部：车次信息与统计 -->
 <div class="top-bar">
     <div class="trip-info">
-        <input type="text" id="cust" class="input-box" placeholder="客户名称 (如: 华润)" onchange="saveState()" autocomplete="off">
         <input type="text" id="plate" class="input-box" placeholder="车牌号 (如: 赣C...)" onchange="saveState()" autocomplete="off">
+    </div>
+    <div class="truck-switcher" id="truck-switcher">
+        <div class="truck-tab active" data-index="0">当前车辆</div>
+        <div class="truck-tab new" onclick="addNewTruck()">+ 添加车辆</div>
     </div>
     <div class="stats-scroller" id="stats-bar">
         <div class="stat-pill total">总计 <span class="stat-num" id="total-val">0</span></div>
@@ -94,6 +114,11 @@
 </div>
 
 <!-- 中部：选择区 -->
+<div class="section">
+    <div class="section-title">Step 0: 选择客户</div>
+    <input type="text" id="cust" class="input-box" placeholder="客户名称 (如: 华润)" autocomplete="off">
+</div>
+
 <div class="section">
     <div class="section-title">Step 1: 选择农户 / 货源</div>
     <div class="grid-container" id="grid-source"></div>
@@ -157,12 +182,21 @@
     let data = {
         sources: ["农户张", "农户李", "农户王", "散户收购", "自家基地"],
         specs: ["6头瓜", "7头瓜", "8头瓜", "花皮瓜", "次果", "样品"],
-        logs: [],
-        session: {
-            cust: "", plate: "", 
-            selSource: "", selSpec: "", 
-            qty: 70
-        }
+        trucks: [{
+            id: "truck_" + Date.now(),
+            customers: [{
+                id: "cust_" + Date.now(),
+                name: "",
+                logs: []
+            }],
+            session: {
+                plate: "", 
+                selSource: "", selSpec: "", 
+                qty: 70,
+                currentCustomerIndex: 0
+            }
+        }],
+        currentTruckIndex: 0
     };
 
     // 初始化
@@ -172,18 +206,91 @@
             try {
                 const parsed = JSON.parse(local);
                 // 合并数据防止旧版字段缺失
-                data = { ...data, ...parsed, session: { ...data.session, ...parsed.session } };
+                if (parsed.trucks) {
+                    data = { ...data, ...parsed };
+                } else {
+                    // 兼容旧版数据结构
+                    data.trucks = [{
+                        id: "truck_" + Date.now(),
+                        customers: [{
+                            id: "cust_" + Date.now(),
+                            name: parsed.session?.cust || "",
+                            logs: parsed.logs || []
+                        }],
+                        session: { 
+                            plate: parsed.session?.plate || "",
+                            selSource: parsed.session?.selSource || "",
+                            selSpec: parsed.session?.selSpec || "",
+                            qty: parsed.session?.qty || 70,
+                            currentCustomerIndex: 0
+                        }
+                    }];
+                }
             } catch(e) { console.error(e); }
         }
         
-        // 恢复界面状态
-        document.getElementById('cust').value = data.session.cust;
-        document.getElementById('plate').value = data.session.plate;
-        document.getElementById('qty-val').innerText = data.session.qty;
+        // 确保数据结构正确
+        if (!data.trucks || !Array.isArray(data.trucks)) {
+            data.trucks = [{
+                id: "truck_" + Date.now(),
+                customers: [{
+                    id: "cust_" + Date.now(),
+                    name: "",
+                    logs: []
+                }],
+                session: {
+                    plate: "", 
+                    selSource: data.sources[0] || "", 
+                    selSpec: data.specs[0] || "", 
+                    qty: 70,
+                    currentCustomerIndex: 0
+                }
+            }];
+        }
         
         // 默认选中
-        if (!data.session.selSource && data.sources.length) data.session.selSource = data.sources[0];
-        if (!data.session.selSpec && data.specs.length) data.session.selSpec = data.specs[0];
+        data.trucks.forEach(truck => {
+            // 兼容旧版数据结构 - 将logs转换为customers
+            if (truck.logs && !truck.customers) {
+                truck.customers = [{
+                    id: "cust_" + Date.now(),
+                    name: "",
+                    logs: truck.logs
+                }];
+                delete truck.logs;
+            }
+            
+            if (!truck.customers || !Array.isArray(truck.customers)) {
+                truck.customers = [{
+                    id: "cust_" + Date.now(),
+                    name: "",
+                    logs: []
+                }];
+            }
+            
+            if (!truck.session) {
+                truck.session = {
+                    plate: "", 
+                    selSource: data.sources[0] || "", 
+                    selSpec: data.specs[0] || "", 
+                    qty: 70,
+                    currentCustomerIndex: 0
+                };
+            }
+            
+            if (truck.session.currentCustomerIndex === undefined) {
+                truck.session.currentCustomerIndex = 0;
+            }
+            
+            if (!truck.session.selSource && data.sources.length) truck.session.selSource = data.sources[0];
+            if (!truck.session.selSpec && data.specs.length) truck.session.selSpec = data.specs[0];
+            if (truck.session.qty === undefined) truck.session.qty = 70;
+            
+            // 确保每个客户都有正确的结构
+            truck.customers.forEach(customer => {
+                if (!customer.logs) customer.logs = [];
+            });
+        });
 
         renderUI();
         
@@ -195,15 +302,34 @@
         }
     }
 
+    // 获取当前车辆数据
+    function getCurrentTruck() {
+        return data.trucks[data.currentTruckIndex];
+    }
+    
+    // 获取当前客户数据
+    function getCurrentCustomer() {
+        const truck = getCurrentTruck();
+        return truck.customers[truck.session.currentCustomerIndex];
+    }
+
     function renderUI() {
-        renderGrid('grid-source', data.sources, data.session.selSource, (val) => {
-            data.session.selSource = val;
+        const currentTruck = getCurrentTruck();
+        const currentCustomer = getCurrentCustomer();
+        
+        // 恢复界面状态
+        document.getElementById('plate').value = currentTruck.session.plate;
+        document.getElementById('cust').value = currentCustomer.name;
+        document.getElementById('qty-val').innerText = currentTruck.session.qty;
+        
+        renderGrid('grid-source', data.sources, currentTruck.session.selSource, (val) => {
+            currentTruck.session.selSource = val;
             saveState();
             renderUI();
         });
         
-        renderGrid('grid-spec', data.specs, data.session.selSpec, (val) => {
-            data.session.selSpec = val;
+        renderGrid('grid-spec', data.specs, currentTruck.session.selSpec, (val) => {
+            currentTruck.session.selSpec = val;
             saveState();
             renderUI();
         });
@@ -211,6 +337,45 @@
         updateBtnText();
         renderStats();
         renderLogs();
+        renderTruckSwitcher();
+        renderCustomerSwitcher();
+    }
+    
+    // 渲染客户切换栏
+    function renderCustomerSwitcher() {
+        const currentTruck = getCurrentTruck();
+        const switcher = document.getElementById('customer-switcher');
+        if (!switcher) {
+            // 创建客户切换栏
+            const topBar = document.querySelector('.top-bar');
+            const customerSwitcherHTML = `
+                <div class="customer-switcher" id="customer-switcher">
+                    <div class="customer-tab active" data-index="0">客户 1</div>
+                    <div class="customer-tab new" onclick="addNewCustomer()">+ 添加客户</div>
+                </div>
+            `;
+            topBar.insertAdjacentHTML('beforeend', customerSwitcherHTML);
+        }
+        
+        // 更新客户切换栏
+        const customerSwitcher = document.getElementById('customer-switcher');
+        customerSwitcher.innerHTML = '';
+        
+        currentTruck.customers.forEach((customer, index) => {
+            const name = customer.name || `客户 ${index + 1}`;
+            const tab = document.createElement('div');
+            tab.className = `customer-tab ${index === currentTruck.session.currentCustomerIndex ? 'active' : ''}`;
+            tab.innerText = name;
+            tab.dataset.index = index;
+            tab.onclick = () => switchCustomer(index);
+            customerSwitcher.appendChild(tab);
+        });
+        
+        const addBtn = document.createElement('div');
+        addBtn.className = 'customer-tab new';
+        addBtn.innerText = '+ 添加客户';
+        addBtn.onclick = addNewCustomer;
+        customerSwitcher.appendChild(addBtn);
     }
 
     function renderGrid(id, list, current, callback) {
@@ -228,12 +393,88 @@
         });
     }
 
+    function renderTruckSwitcher() {
+        const switcher = document.getElementById('truck-switcher');
+        switcher.innerHTML = '';
+        
+        data.trucks.forEach((truck, index) => {
+            const plate = truck.session.plate || `车辆 ${index + 1}`;
+            const tab = document.createElement('div');
+            tab.className = `truck-tab ${index === data.currentTruckIndex ? 'active' : ''}`;
+            tab.innerText = plate;
+            tab.dataset.index = index;
+            tab.onclick = () => switchTruck(index);
+            switcher.appendChild(tab);
+        });
+        
+        const addBtn = document.createElement('div');
+        addBtn.className = 'truck-tab new';
+        addBtn.innerText = '+ 添加车辆';
+        addBtn.onclick = addNewTruck;
+        switcher.appendChild(addBtn);
+    }
+
+    function switchTruck(index) {
+        data.currentTruckIndex = index;
+        saveState();
+        renderUI();
+        if(navigator.vibrate) navigator.vibrate(30);
+    }
+
+    function addNewTruck() {
+        const newTruck = {
+            id: "truck_" + Date.now(),
+            customers: [{
+                id: "cust_" + Date.now(),
+                name: "",
+                logs: []
+            }],
+            session: {
+                plate: "", 
+                selSource: data.sources[0] || "", 
+                selSpec: data.specs[0] || "", 
+                qty: 70,
+                currentCustomerIndex: 0
+            }
+        };
+        data.trucks.push(newTruck);
+        data.currentTruckIndex = data.trucks.length - 1;
+        saveState();
+        renderUI();
+        if(navigator.vibrate) navigator.vibrate(50);
+    }
+    
+    // 切换客户
+    function switchCustomer(index) {
+        const currentTruck = getCurrentTruck();
+        currentTruck.session.currentCustomerIndex = index;
+        saveState();
+        renderUI();
+        if(navigator.vibrate) navigator.vibrate(30);
+    }
+    
+    // 添加新客户
+    function addNewCustomer() {
+        const currentTruck = getCurrentTruck();
+        const newCustomer = {
+            id: "cust_" + Date.now(),
+            name: "",
+            logs: []
+        };
+        currentTruck.customers.push(newCustomer);
+        currentTruck.session.currentCustomerIndex = currentTruck.customers.length - 1;
+        saveState();
+        renderUI();
+        if(navigator.vibrate) navigator.vibrate(50);
+    }
+
     function addQty(delta) {
+        const currentTruck = getCurrentTruck();
         let v = parseInt(document.getElementById('qty-val').innerText);
         v += delta;
         if (v < 0) v = 0;
         document.getElementById('qty-val').innerText = v;
-        data.session.qty = v;
+        currentTruck.session.qty = v;
         saveState();
         updateBtnText();
         
@@ -242,12 +483,15 @@
     }
 
     function updateBtnText() {
+        const currentTruck = getCurrentTruck();
         const sub = document.getElementById('btn-subtext');
-        sub.innerText = `${data.session.qty}箱 · ${data.session.selSpec} · ${data.session.selSource}`;
+        sub.innerText = `${currentTruck.session.qty}箱 · ${currentTruck.session.selSpec} · ${currentTruck.session.selSource}`;
     }
 
     // 核心提交
     function commit() {
+        const currentTruck = getCurrentTruck();
+        const currentCustomer = getCurrentCustomer();
         const cust = document.getElementById('cust').value.trim();
         const plate = document.getElementById('plate').value.trim();
         
@@ -256,24 +500,28 @@
             if(navigator.vibrate) navigator.vibrate([50, 50]);
         }
         
-        if (data.session.qty <= 0) return alert("数量必须大于0");
+        if (currentTruck.session.qty <= 0) return alert("数量必须大于0");
 
         const btn = document.querySelector('.main-btn');
         btn.classList.add('loading');
+
+        // 更新当前客户名称
+        currentCustomer.name = cust || "未知客户";
 
         const now = new Date();
         const log = {
             id: Date.now(),
             timeStr: now.toLocaleTimeString('zh-CN', {hour12:false}),
             iso: now.toISOString(),
-            cust: cust || "未知客户",
+            cust: currentCustomer.name,
             plate: plate || "未知车牌",
-            source: data.session.selSource,
-            spec: data.session.selSpec,
-            qty: data.session.qty
+            source: currentTruck.session.selSource,
+            spec: currentTruck.session.selSpec,
+            qty: currentTruck.session.qty,
+            palletNumber: currentCustomer.logs.length + 1 // 增加托盘序号
         };
 
-        data.logs.unshift(log); // 最新在最前
+        currentCustomer.logs.unshift(log); // 最新在最前
         saveState();
         renderUI();
         
@@ -288,9 +536,10 @@
     }
 
     function renderLogs() {
+        const currentCustomer = getCurrentCustomer();
         const el = document.getElementById('history');
         el.innerHTML = '';
-        data.logs.slice(0, 50).forEach((log, i) => {
+        currentCustomer.logs.slice(0, 50).forEach((log, i) => {
             const li = document.createElement('li');
             li.className = `history-item ${i===0 ? 'recent' : ''}`;
             li.innerHTML = `
@@ -299,6 +548,7 @@
                     <div style="font-size:1rem; font-weight:bold; color:#fff">${log.spec}</div>
                 </div>
                 <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:0.8rem; color:#888; margin-right:10px;">托盘 ${log.palletNumber}</span>
                     <span style="font-size:1.2rem; color:${i===0?'#fff':'#ccc'}">x${log.qty}</span>
                     <span onclick="delLog(${log.id})" style="color:#555; font-size:1.5rem; cursor:pointer;">×</span>
                 </div>
@@ -308,8 +558,13 @@
     }
 
     function delLog(id) {
+        const currentCustomer = getCurrentCustomer();
         if(confirm("删除这条记录？")) {
-            data.logs = data.logs.filter(l => l.id !== id);
+            currentCustomer.logs = currentCustomer.logs.filter(l => l.id !== id);
+            // 重新计算托盘序号
+            currentCustomer.logs.forEach((log, index) => {
+                log.palletNumber = currentCustomer.logs.length - index;
+            });
             saveState();
             renderUI();
             if(navigator.vibrate) navigator.vibrate(50);
@@ -317,6 +572,7 @@
     }
 
     function renderStats() {
+        const currentCustomer = getCurrentCustomer();
         const bar = document.getElementById('stats-bar');
         // 保留Total，清除其他
         const totalPill = bar.firstElementChild;
@@ -326,7 +582,7 @@
         let total = 0;
         let map = {};
         
-        data.logs.forEach(l => {
+        currentCustomer.logs.forEach(l => {
             total += l.qty;
             if(!map[l.spec]) map[l.spec] = 0;
             map[l.spec] += l.qty;
@@ -343,9 +599,27 @@
     }
 
     function saveState() {
-        data.session.cust = document.getElementById('cust').value;
-        data.session.plate = document.getElementById('plate').value;
+        const currentTruck = getCurrentTruck();
+        currentTruck.session.plate = document.getElementById('plate').value;
         localStorage.setItem('wh_v4_data', JSON.stringify(data));
+        
+        // 支持多人同时使用 - 使用localStorage同步（简单实现）
+        // 实际生产环境建议使用Firebase等实时数据库
+        if ('BroadcastChannel' in window) {
+            const channel = new BroadcastChannel('truck_loading_tool');
+            channel.postMessage({ type: 'UPDATE', data: data });
+        }
+    }
+
+    // 监听其他窗口的更新
+    if ('BroadcastChannel' in window) {
+        const channel = new BroadcastChannel('truck_loading_tool');
+        channel.onmessage = (event) => {
+            if (event.data.type === 'UPDATE') {
+                data = event.data.data;
+                renderUI();
+            }
+        };
     }
 
     // 配置与导出
@@ -368,9 +642,11 @@
         if (s1.length && s2.length) {
             data.sources = s1;
             data.specs = s2;
-            // 修正当前选择
-            if (!s1.includes(data.session.selSource)) data.session.selSource = s1[0];
-            if (!s2.includes(data.session.selSpec)) data.session.selSpec = s2[0];
+            // 修正所有车辆的当前选择
+            data.trucks.forEach(truck => {
+                if (!s1.includes(truck.session.selSource)) truck.session.selSource = s1[0];
+                if (!s2.includes(truck.session.selSpec)) truck.session.selSpec = s2[0];
+            });
             
             saveState();
             renderUI();
@@ -383,14 +659,15 @@
     }
 
     function exportData() {
-        let csv = "\uFEFF时间,客户,车牌,农户,规格,数量\n";
-        data.logs.forEach(l => {
-            csv += `${l.iso},${l.cust},${l.plate},${l.source},${l.spec},${l.qty}\n`;
+        const currentTruck = getCurrentTruck();
+        let csv = "\uFEFF时间,客户,车牌,农户,规格,数量,托盘序号\n";
+        currentTruck.logs.forEach(l => {
+            csv += `${l.iso},${l.cust},${l.plate},${l.source},${l.spec},${l.qty},${l.palletNumber}\n`;
         });
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = `装车单_${data.session.plate||'未命名'}_${new Date().toLocaleDateString()}.csv`;
+        link.download = `装车单_${currentTruck.session.plate||'未命名'}_${new Date().toLocaleDateString()}.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -398,10 +675,16 @@
     }
 
     function resetTruck() {
+        const currentTruck = getCurrentTruck();
         if (confirm("【警告】\n将清空所有计数，开启新车任务。\n请确认已导出数据！")) {
-            data.logs = [];
-            data.session.plate = "";
-            data.session.cust = "";
+            // 重置车辆数据
+            currentTruck.customers = [{
+                id: "cust_" + Date.now(),
+                name: "",
+                logs: []
+            }];
+            currentTruck.session.plate = "";
+            currentTruck.session.currentCustomerIndex = 0;
             document.getElementById('plate').value = "";
             document.getElementById('cust').value = "";
             saveState();
