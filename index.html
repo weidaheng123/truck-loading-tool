@@ -116,7 +116,7 @@
 <!-- 中部：选择区 -->
 <div class="section">
     <div class="section-title">Step 0: 选择客户</div>
-    <input type="text" id="cust" class="input-box" placeholder="客户名称 (如: 华润)" autocomplete="off">
+    <input type="text" id="cust" class="input-box" placeholder="客户名称 (如: 华润)" autocomplete="off" oninput="updateCustomerName()">
 </div>
 
 <div class="section">
@@ -453,6 +453,16 @@
         if(navigator.vibrate) navigator.vibrate(30);
     }
     
+    // 更新客户名称（实时）
+    function updateCustomerName() {
+        const currentTruck = getCurrentTruck();
+        const currentCustomer = getCurrentCustomer();
+        const name = document.getElementById('cust').value.trim();
+        currentCustomer.name = name;
+        saveState();
+        renderCustomerSwitcher();
+    }
+    
     // 添加新客户
     function addNewCustomer() {
         const currentTruck = getCurrentTruck();
@@ -573,12 +583,22 @@
 
     function renderStats() {
         const currentCustomer = getCurrentCustomer();
+        const currentTruck = getCurrentTruck();
         const bar = document.getElementById('stats-bar');
         // 保留Total，清除其他
         const totalPill = bar.firstElementChild;
         bar.innerHTML = '';
         bar.appendChild(totalPill);
         
+        // 计算整辆车的总数（汇总所有客户）
+        let truckTotal = 0;
+        currentTruck.customers.forEach(customer => {
+            customer.logs.forEach(l => {
+                truckTotal += l.qty;
+            });
+        });
+        
+        // 计算当前客户的规格统计（独立）
         let total = 0;
         let map = {};
         
@@ -588,8 +608,10 @@
             map[l.spec] += l.qty;
         });
         
-        document.getElementById('total-val').innerText = total;
+        // 显示整辆车的总数
+        document.getElementById('total-val').innerText = truckTotal;
         
+        // 显示当前客户的规格统计
         Object.keys(map).forEach(spec => {
             const div = document.createElement('div');
             div.className = 'stat-pill';
