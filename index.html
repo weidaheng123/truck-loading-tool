@@ -12,66 +12,47 @@
         :root { --bg: #121212; --panel: #1e1e1e; --primary: #2962FF; --accent: #FFC107; --text: #eee; --border: #333; --success: #00C853; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; padding-bottom: 120px; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
         
-        /* === 顶部：本车信息栏 (固定) === */
         .top-bar { background: #263238; padding: 12px; border-bottom: 2px solid var(--primary); position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 8px rgba(0,0,0,0.4); }
-        .trip-info { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-        .input-box { flex: 1; background: #37474F; border: 1px solid #455A64; color: #fff; padding: 12px; border-radius: 8px; font-size: 1rem; font-weight: bold; outline: none; transition: border 0.2s; }
-        .input-box:focus { border-color: var(--primary); background: #2f3e46; }
-        .input-box.small { flex: none; width: 120px; }
         
-        /* 车辆切换栏 */
-        .truck-switcher { display: flex; gap: 8px; margin-bottom: 10px; overflow-x: auto; scrollbar-width: none; }
-        .truck-switcher::-webkit-scrollbar { display: none; }
-        .truck-tab { background: #37474F; border: 1px solid #455A64; color: #fff; padding: 8px 12px; border-radius: 20px; font-size: 0.8rem; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
+        .truck-switcher, .customer-switcher { display: flex; gap: 8px; margin-bottom: 10px; overflow-x: auto; scrollbar-width: none; }
+        .truck-switcher::-webkit-scrollbar, .customer-switcher::-webkit-scrollbar { display: none; }
+        .truck-tab, .customer-tab { background: #37474F; border: 1px solid #455A64; color: #fff; padding: 8px 12px; border-radius: 20px; font-size: 0.8rem; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
         .truck-tab.active { background: var(--primary); border-color: var(--primary); font-weight: bold; }
-        .truck-tab.new { background: #1b5e20; border-color: var(--success); }
-        
-        /* 客户切换栏 */
-        .customer-switcher { display: flex; gap: 8px; margin-bottom: 10px; overflow-x: auto; scrollbar-width: none; }
-        .customer-switcher::-webkit-scrollbar { display: none; }
-        .customer-tab { background: #37474F; border: 1px solid #455A64; color: #fff; padding: 8px 12px; border-radius: 20px; font-size: 0.8rem; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
         .customer-tab.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: bold; }
-        .customer-tab.new { background: #1b5e20; border-color: var(--success); }
+        .truck-tab.new, .customer-tab.new { background: #1b5e20; border-color: var(--success); }
         
-        /* 实时统计条 */
         .stats-scroller { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 4px; scrollbar-width: none; }
         .stats-scroller::-webkit-scrollbar { display: none; }
         .stat-pill { background: #37474F; padding: 8px 14px; border-radius: 20px; font-size: 0.9rem; white-space: nowrap; display: flex; align-items: center; gap: 5px; border: 1px solid #455A64; }
         .stat-pill.total { background: var(--primary); color: #fff; border-color: var(--primary); font-weight: bold; }
         .stat-num { color: var(--accent); font-weight: bold; font-size: 1.2rem; }
 
-        /* === 核心选择区 === */
         .section { background: var(--panel); margin: 12px; padding: 15px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .section-title { color: #90A4AE; font-size: 0.9rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; }
         
-        /* 网格按钮 - 缩小图标到1/4 */
         .grid-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
         .select-btn { background: #2c2c2c; border: 1px solid #444; color: #bbb; padding: 5px 3px; border-radius: 4px; text-align: center; font-size: 0.6rem; cursor: pointer; transition: all 0.1s; display: flex; align-items: center; justify-content: center; min-height: 20px; word-break: break-all; line-height: 1.1; }
         .select-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); font-weight: bold; transform: scale(1.02); box-shadow: 0 4px 10px rgba(41, 98, 255, 0.3); }
 
-        /* 数量控制 */
         .qty-wrapper { display: flex; align-items: center; gap: 10px; }
         .qty-screen { flex: 1; background: #000; color: var(--success); font-family: monospace; font-size: 2.8rem; text-align: center; border-radius: 10px; padding: 8px; border: 1px solid #333; font-weight: bold; letter-spacing: -1px; }
         .numpad { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 150px; }
         .num-btn { background: #333; border: 1px solid #444; color: #fff; padding: 14px; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
         .num-btn:active { background: #555; }
 
-        /* === 底部操作栏 === */
         .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #1a1a1a; padding: 15px; border-top: 1px solid #333; display: flex; gap: 15px; z-index: 200; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
         .main-btn { flex: 1; background: var(--success); color: #fff; border: none; padding: 20px; border-radius: 10px; font-size: 1.5rem; font-weight: bold; display: flex; flex-direction: column; align-items: center; line-height: 1; box-shadow: 0 4px 6px rgba(0, 200, 83, 0.3); cursor: pointer; }
         .main-btn:active { transform: translateY(2px); background: #00a040; }
         .main-btn span { font-size: 0.9rem; margin-top: 8px; opacity: 0.9; font-weight: normal; }
         .settings-icon { padding: 0 15px; background: none; border: none; font-size: 1.8rem; cursor: pointer; opacity: 0.5; }
 
-        /* === 历史记录 === */
         .history-list { list-style: none; padding: 0; margin: 12px; padding-bottom: 20px; }
         .history-item { background: #263238; border-radius: 8px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #546E7A; animation: slideIn 0.3s; position: relative; }
         .history-item.recent { border-left-color: var(--success); background: #1b5e20; }
-        .history-item::before { content: ''; position: absolute; left: -10px; top: 50%; transform: translateY(-50%); background: #546E7A; color: #fff; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; }
+        .history-item::before { content: attr(data-pallet); position: absolute; left: -10px; top: 50%; transform: translateY(-50%); background: #546E7A; color: #fff; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; }
         .history-item.recent::before { background: var(--success); }
         @keyframes slideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
-        /* === 弹窗 === */
         .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300; overflow-y: auto; padding: 20px; backdrop-filter: blur(5px); }
         .overlay.show { display: block; }
         .panel { background: #212121; padding: 20px; border-radius: 12px; border: 1px solid #333; }
@@ -82,7 +63,6 @@
         .btn-red { background: #d32f2f; }
         .btn-grey { background: #616161; }
         
-        /* === 响应式调整 === */
         @media (max-width: 480px) {
             .grid-container { grid-template-columns: repeat(2, 1fr); }
             .qty-screen { font-size: 2.2rem; }
@@ -90,33 +70,33 @@
             .numpad { width: 130px; }
         }
         
-        /* === 加载动画 === */
         .loading { opacity: 0.6; pointer-events: none; }
         .loading::after { content: ''; display: inline-block; width: 20px; height: 20px; border: 2px solid #f3f3f3; border-top: 2px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-left: 10px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .edit-input { width: 100%; padding: 4px 8px; border: none; border-radius: 4px; outline: 2px solid #1976d2; background: #37474F; color: #fff; font-size: 0.8rem; }
+        .customer-edit-input { outline-color: #ffd600; }
+        
+        .tab-container { display: flex; align-items: center; }
+        .name-span { flex: 1; cursor: pointer; }
+        .delete-btn { margin-left: 8px; cursor: pointer; color: #ff5252; font-weight: bold; }
+        .edit-btn { margin-left: 4px; cursor: pointer; color: #1976d2; font-size: 0.7rem; }
     </style>
 </head>
 <body>
 
-<!-- 顶部：车次信息与统计 -->
 <div class="top-bar">
-    <div class="trip-info">
-        <input type="text" id="plate" class="input-box" placeholder="车牌号 (如: 赣C...)" onchange="saveState()" autocomplete="off">
-    </div>
     <div class="truck-switcher" id="truck-switcher">
         <div class="truck-tab active" data-index="0">当前车辆</div>
         <div class="truck-tab new" onclick="addNewTruck()">+ 添加车辆</div>
     </div>
+    <div class="customer-switcher" id="customer-switcher">
+        <div class="customer-tab active" data-index="0">客户 1</div>
+        <div class="customer-tab new" onclick="addNewCustomer()">+ 添加客户</div>
+    </div>
     <div class="stats-scroller" id="stats-bar">
         <div class="stat-pill total">总计 <span class="stat-num" id="total-val">0</span></div>
-        <!-- 动态生成 -->
     </div>
-</div>
-
-<!-- 中部：选择区 -->
-<div class="section">
-    <div class="section-title">Step 0: 选择客户</div>
-    <input type="text" id="cust" class="input-box" placeholder="客户名称 (如: 华润)" autocomplete="off" oninput="updateCustomerName()">
 </div>
 
 <div class="section">
@@ -142,10 +122,8 @@
     </div>
 </div>
 
-<!-- 历史列表 -->
 <ul class="history-list" id="history"></ul>
 
-<!-- 底部：大按钮 -->
 <div class="bottom-bar">
     <button class="settings-icon" onclick="openConfig()">⚙️</button>
     <button class="main-btn" onclick="commit()">
@@ -154,7 +132,6 @@
     </button>
 </div>
 
-<!-- 配置弹窗 -->
 <div class="overlay" id="config-overlay">
     <div class="panel">
         <h2>🛠️ 系统配置</h2>
@@ -178,7 +155,6 @@
 </div>
 
 <script>
-    // 默认数据
     let data = {
         sources: ["农户张", "农户李", "农户王", "散户收购", "自家基地"],
         specs: ["6头瓜", "7头瓜", "8头瓜", "花皮瓜", "次果", "样品"],
@@ -191,7 +167,8 @@
             }],
             session: {
                 plate: "", 
-                selSource: "", selSpec: "", 
+                selSource: "", 
+                selSpec: "", 
                 qty: 70,
                 currentCustomerIndex: 0
             }
@@ -199,17 +176,14 @@
         currentTruckIndex: 0
     };
 
-    // 初始化
     function init() {
         const local = localStorage.getItem('wh_v4_data');
         if (local) {
             try {
                 const parsed = JSON.parse(local);
-                // 合并数据防止旧版字段缺失
                 if (parsed.trucks) {
                     data = { ...data, ...parsed };
                 } else {
-                    // 兼容旧版数据结构
                     data.trucks = [{
                         id: "truck_" + Date.now(),
                         customers: [{
@@ -229,7 +203,6 @@
             } catch(e) { console.error(e); }
         }
         
-        // 确保数据结构正确
         if (!data.trucks || !Array.isArray(data.trucks)) {
             data.trucks = [{
                 id: "truck_" + Date.now(),
@@ -248,9 +221,7 @@
             }];
         }
         
-        // 默认选中
         data.trucks.forEach(truck => {
-            // 兼容旧版数据结构 - 将logs转换为customers
             if (truck.logs && !truck.customers) {
                 truck.customers = [{
                     id: "cust_" + Date.now(),
@@ -286,7 +257,6 @@
             if (!truck.session.selSpec && data.specs.length) truck.session.selSpec = data.specs[0];
             if (truck.session.qty === undefined) truck.session.qty = 70;
             
-            // 确保每个客户都有正确的结构
             truck.customers.forEach(customer => {
                 if (!customer.logs) customer.logs = [];
             });
@@ -294,7 +264,6 @@
 
         renderUI();
         
-        // 检查是否支持PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed'));
@@ -302,12 +271,10 @@
         }
     }
 
-    // 获取当前车辆数据
     function getCurrentTruck() {
         return data.trucks[data.currentTruckIndex];
     }
     
-    // 获取当前客户数据
     function getCurrentCustomer() {
         const truck = getCurrentTruck();
         return truck.customers[truck.session.currentCustomerIndex];
@@ -317,9 +284,6 @@
         const currentTruck = getCurrentTruck();
         const currentCustomer = getCurrentCustomer();
         
-        // 恢复界面状态
-        document.getElementById('plate').value = currentTruck.session.plate;
-        document.getElementById('cust').value = currentCustomer.name;
         document.getElementById('qty-val').innerText = currentTruck.session.qty;
         
         renderGrid('grid-source', data.sources, currentTruck.session.selSource, (val) => {
@@ -341,58 +305,6 @@
         renderCustomerSwitcher();
     }
     
-    // 渲染客户切换栏
-    function renderCustomerSwitcher() {
-        const currentTruck = getCurrentTruck();
-        const switcher = document.getElementById('customer-switcher');
-        if (!switcher) {
-            // 创建客户切换栏
-            const topBar = document.querySelector('.top-bar');
-            const customerSwitcherHTML = `
-                <div class="customer-switcher" id="customer-switcher">
-                    <div class="customer-tab active" data-index="0">客户 1</div>
-                    <div class="customer-tab new" onclick="addNewCustomer()">+ 添加客户</div>
-                </div>
-            `;
-            topBar.insertAdjacentHTML('beforeend', customerSwitcherHTML);
-        }
-        
-        // 更新客户切换栏
-        const customerSwitcher = document.getElementById('customer-switcher');
-        customerSwitcher.innerHTML = '';
-        
-        currentTruck.customers.forEach((customer, index) => {
-            const name = customer.name || `客户 ${index + 1}`;
-            const tab = document.createElement('div');
-            tab.className = `customer-tab ${index === currentTruck.session.currentCustomerIndex ? 'active' : ''}`;
-            tab.innerText = name;
-            tab.dataset.index = index;
-            tab.onclick = () => switchCustomer(index);
-            customerSwitcher.appendChild(tab);
-        });
-        
-        const addBtn = document.createElement('div');
-        addBtn.className = 'customer-tab new';
-        addBtn.innerText = '+ 添加客户';
-        addBtn.onclick = addNewCustomer;
-        customerSwitcher.appendChild(addBtn);
-    }
-
-    function renderGrid(id, list, current, callback) {
-        const el = document.getElementById(id);
-        el.innerHTML = '';
-        list.forEach(item => {
-            const btn = document.createElement('div');
-            btn.className = `select-btn ${item === current ? 'active' : ''}`;
-            btn.innerText = item;
-            btn.onclick = () => callback(item);
-            // 增强触摸体验
-            btn.style.touchAction = 'manipulation';
-            btn.style.webkitTapHighlightColor = 'transparent';
-            el.appendChild(btn);
-        });
-    }
-
     function renderTruckSwitcher() {
         const switcher = document.getElementById('truck-switcher');
         switcher.innerHTML = '';
@@ -401,9 +313,48 @@
             const plate = truck.session.plate || `车辆 ${index + 1}`;
             const tab = document.createElement('div');
             tab.className = `truck-tab ${index === data.currentTruckIndex ? 'active' : ''}`;
-            tab.innerText = plate;
+            tab.style.display = 'flex';
+            tab.style.alignItems = 'center';
             tab.dataset.index = index;
-            tab.onclick = () => switchTruck(index);
+            
+            const container = document.createElement('div');
+            container.className = 'tab-container';
+            container.style.flex = '1';
+            container.style.display = 'flex';
+            container.style.alignItems = 'center';
+            
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'name-span';
+            nameSpan.innerText = plate;
+            nameSpan.onclick = (e) => {
+                e.stopPropagation();
+                if (index === data.currentTruckIndex) {
+                    editTruckName(index, e);
+                } else {
+                    switchTruck(index);
+                }
+            };
+            container.appendChild(nameSpan);
+            
+            const editSpan = document.createElement('span');
+            editSpan.className = 'edit-btn';
+            editSpan.innerText = '✏️';
+            editSpan.onclick = (e) => {
+                e.stopPropagation();
+                editTruckName(index, e);
+            };
+            container.appendChild(editSpan);
+            
+            tab.appendChild(container);
+            
+            if (data.trucks.length > 1) {
+                const deleteSpan = document.createElement('span');
+                deleteSpan.className = 'delete-btn';
+                deleteSpan.innerText = '×';
+                deleteSpan.onclick = (e) => deleteTruck(index, e);
+                tab.appendChild(deleteSpan);
+            }
+            
             switcher.appendChild(tab);
         });
         
@@ -412,6 +363,57 @@
         addBtn.innerText = '+ 添加车辆';
         addBtn.onclick = addNewTruck;
         switcher.appendChild(addBtn);
+    }
+    
+    function editTruckName(index, event) {
+        event.stopPropagation();
+        const truck = data.trucks[index];
+        const currentName = truck.session.plate || `车辆 ${index + 1}`;
+        
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = currentName;
+        input.className = 'edit-input';
+        
+        const span = event.target.closest('.truck-tab').querySelector('.name-span');
+        const parent = span.parentNode;
+        parent.insertBefore(input, span);
+        span.style.display = 'none';
+        input.focus();
+        input.select();
+        
+        const saveEdit = () => {
+            const newName = input.value.trim();
+            truck.session.plate = newName;
+            saveState();
+            renderTruckSwitcher();
+        };
+        
+        input.onblur = saveEdit;
+        input.onkeydown = (e) => {
+            if (e.key === 'Enter') {
+                input.blur();
+            } else if (e.key === 'Escape') {
+                span.style.display = '';
+                input.remove();
+            }
+        };
+    }
+    
+    function deleteTruck(index, event) {
+        event.stopPropagation();
+        if (!confirm("确定要删除这个车辆吗？所有数据都会丢失！")) return;
+        
+        data.trucks.splice(index, 1);
+        if (data.currentTruckIndex >= data.trucks.length) {
+            data.currentTruckIndex = data.trucks.length - 1;
+        }
+        if (data.trucks.length === 0) {
+            addNewTruck();
+        }
+        saveState();
+        renderUI();
+        if(navigator.vibrate) navigator.vibrate(50);
     }
 
     function switchTruck(index) {
@@ -444,7 +446,132 @@
         if(navigator.vibrate) navigator.vibrate(50);
     }
     
-    // 切换客户
+    function renderCustomerSwitcher() {
+        const currentTruck = getCurrentTruck();
+        const switcher = document.getElementById('customer-switcher');
+        if (!switcher) {
+            const topBar = document.querySelector('.top-bar');
+            const customerSwitcherHTML = `
+                <div class="customer-switcher" id="customer-switcher">
+                    <div class="customer-tab active" data-index="0">客户 1</div>
+                    <div class="customer-tab new" onclick="addNewCustomer()">+ 添加客户</div>
+                </div>
+            `;
+            topBar.insertAdjacentHTML('beforeend', customerSwitcherHTML);
+        }
+        
+        const customerSwitcher = document.getElementById('customer-switcher');
+        customerSwitcher.innerHTML = '';
+        
+        currentTruck.customers.forEach((customer, index) => {
+            const name = customer.name || `客户 ${index + 1}`;
+            const tab = document.createElement('div');
+            tab.className = `customer-tab ${index === currentTruck.session.currentCustomerIndex ? 'active' : ''}`;
+            tab.style.display = 'flex';
+            tab.style.alignItems = 'center';
+            tab.dataset.index = index;
+            
+            const container = document.createElement('div');
+            container.className = 'tab-container';
+            container.style.flex = '1';
+            container.style.display = 'flex';
+            container.style.alignItems = 'center';
+            
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'name-span';
+            nameSpan.innerText = name;
+            nameSpan.onclick = (e) => {
+                e.stopPropagation();
+                if (index === currentTruck.session.currentCustomerIndex) {
+                    editCustomerName(index, e);
+                } else {
+                    switchCustomer(index);
+                }
+            };
+            container.appendChild(nameSpan);
+            
+            const editSpan = document.createElement('span');
+            editSpan.className = 'edit-btn';
+            editSpan.innerText = '✏️';
+            editSpan.onclick = (e) => {
+                e.stopPropagation();
+                editCustomerName(index, e);
+            };
+            container.appendChild(editSpan);
+            
+            tab.appendChild(container);
+            
+            if (currentTruck.customers.length > 1) {
+                const deleteSpan = document.createElement('span');
+                deleteSpan.className = 'delete-btn';
+                deleteSpan.innerText = '×';
+                deleteSpan.onclick = (e) => deleteCustomer(index, e);
+                tab.appendChild(deleteSpan);
+            }
+            
+            customerSwitcher.appendChild(tab);
+        });
+        
+        const addBtn = document.createElement('div');
+        addBtn.className = 'customer-tab new';
+        addBtn.innerText = '+ 添加客户';
+        addBtn.onclick = addNewCustomer;
+        customerSwitcher.appendChild(addBtn);
+    }
+    
+    function editCustomerName(index, event) {
+        event.stopPropagation();
+        const currentTruck = getCurrentTruck();
+        const customer = currentTruck.customers[index];
+        const currentName = customer.name || `客户 ${index + 1}`;
+        
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = currentName;
+        input.className = 'edit-input customer-edit-input';
+        
+        const span = event.target.closest('.customer-tab').querySelector('.name-span');
+        const parent = span.parentNode;
+        parent.insertBefore(input, span);
+        span.style.display = 'none';
+        input.focus();
+        input.select();
+        
+        const saveEdit = () => {
+            const newName = input.value.trim();
+            customer.name = newName;
+            saveState();
+            renderCustomerSwitcher();
+        };
+        
+        input.onblur = saveEdit;
+        input.onkeydown = (e) => {
+            if (e.key === 'Enter') {
+                input.blur();
+            } else if (e.key === 'Escape') {
+                span.style.display = '';
+                input.remove();
+            }
+        };
+    }
+    
+    function deleteCustomer(index, event) {
+        event.stopPropagation();
+        const currentTruck = getCurrentTruck();
+        if (!confirm("确定要删除这个客户吗？所有数据都会丢失！")) return;
+        
+        currentTruck.customers.splice(index, 1);
+        if (currentTruck.session.currentCustomerIndex >= currentTruck.customers.length) {
+            currentTruck.session.currentCustomerIndex = currentTruck.customers.length - 1;
+        }
+        if (currentTruck.customers.length === 0) {
+            addNewCustomer();
+        }
+        saveState();
+        renderUI();
+        if(navigator.vibrate) navigator.vibrate(50);
+    }
+    
     function switchCustomer(index) {
         const currentTruck = getCurrentTruck();
         currentTruck.session.currentCustomerIndex = index;
@@ -453,17 +580,6 @@
         if(navigator.vibrate) navigator.vibrate(30);
     }
     
-    // 更新客户名称（实时）
-    function updateCustomerName() {
-        const currentTruck = getCurrentTruck();
-        const currentCustomer = getCurrentCustomer();
-        const name = document.getElementById('cust').value.trim();
-        currentCustomer.name = name;
-        saveState();
-        renderCustomerSwitcher();
-    }
-    
-    // 添加新客户
     function addNewCustomer() {
         const currentTruck = getCurrentTruck();
         const newCustomer = {
@@ -478,6 +594,20 @@
         if(navigator.vibrate) navigator.vibrate(50);
     }
 
+    function renderGrid(id, list, current, callback) {
+        const el = document.getElementById(id);
+        el.innerHTML = '';
+        list.forEach(item => {
+            const btn = document.createElement('div');
+            btn.className = `select-btn ${item === current ? 'active' : ''}`;
+            btn.innerText = item;
+            btn.onclick = () => callback(item);
+            btn.style.touchAction = 'manipulation';
+            btn.style.webkitTapHighlightColor = 'transparent';
+            el.appendChild(btn);
+        });
+    }
+
     function addQty(delta) {
         const currentTruck = getCurrentTruck();
         let v = parseInt(document.getElementById('qty-val').innerText);
@@ -488,7 +618,6 @@
         saveState();
         updateBtnText();
         
-        // 触摸反馈
         if(navigator.vibrate) navigator.vibrate(20);
     }
 
@@ -498,46 +627,34 @@
         sub.innerText = `${currentTruck.session.qty}箱 · ${currentTruck.session.selSpec} · ${currentTruck.session.selSource}`;
     }
 
-    // 核心提交
     function commit() {
         const currentTruck = getCurrentTruck();
         const currentCustomer = getCurrentCustomer();
-        const cust = document.getElementById('cust').value.trim();
-        const plate = document.getElementById('plate').value.trim();
-        
-        if (!cust || !plate) {
-            // 允许但不推荐，给个轻微震动
-            if(navigator.vibrate) navigator.vibrate([50, 50]);
-        }
+        const plate = currentTruck.session.plate || "未知车牌";
         
         if (currentTruck.session.qty <= 0) return alert("数量必须大于0");
 
         const btn = document.querySelector('.main-btn');
         btn.classList.add('loading');
 
-        // 更新当前客户名称
-        currentCustomer.name = cust || "未知客户";
-
         const now = new Date();
         const log = {
             id: Date.now(),
             timeStr: now.toLocaleTimeString('zh-CN', {hour12:false}),
             iso: now.toISOString(),
-            cust: currentCustomer.name,
-            plate: plate || "未知车牌",
+            cust: currentCustomer.name || "未知客户",
+            plate: plate,
             source: currentTruck.session.selSource,
             spec: currentTruck.session.selSpec,
             qty: currentTruck.session.qty,
-            palletNumber: currentCustomer.logs.length + 1 // 增加托盘序号
+            palletNumber: currentCustomer.logs.length + 1
         };
 
-        currentCustomer.logs.unshift(log); // 最新在最前
+        currentCustomer.logs.unshift(log);
         saveState();
         renderUI();
         
-        // 成功反馈
         if(navigator.vibrate) navigator.vibrate(100);
-        // 按钮闪烁
         btn.style.background = '#00E676';
         setTimeout(() => {
             btn.style.background = '';
@@ -552,6 +669,7 @@
         currentCustomer.logs.slice(0, 50).forEach((log, i) => {
             const li = document.createElement('li');
             li.className = `history-item ${i===0 ? 'recent' : ''}`;
+            li.setAttribute('data-pallet', log.palletNumber);
             li.innerHTML = `
                 <div>
                     <div style="font-size:0.8rem; color:#888">${log.timeStr} - ${log.source}</div>
@@ -571,7 +689,6 @@
         const currentCustomer = getCurrentCustomer();
         if(confirm("删除这条记录？")) {
             currentCustomer.logs = currentCustomer.logs.filter(l => l.id !== id);
-            // 重新计算托盘序号
             currentCustomer.logs.forEach((log, index) => {
                 log.palletNumber = currentCustomer.logs.length - index;
             });
@@ -585,12 +702,10 @@
         const currentCustomer = getCurrentCustomer();
         const currentTruck = getCurrentTruck();
         const bar = document.getElementById('stats-bar');
-        // 保留Total，清除其他
         const totalPill = bar.firstElementChild;
         bar.innerHTML = '';
         bar.appendChild(totalPill);
         
-        // 计算整辆车的总数（汇总所有客户）
         let truckTotal = 0;
         currentTruck.customers.forEach(customer => {
             customer.logs.forEach(l => {
@@ -598,7 +713,6 @@
             });
         });
         
-        // 计算当前客户的规格统计（独立）
         let total = 0;
         let map = {};
         
@@ -608,10 +722,8 @@
             map[l.spec] += l.qty;
         });
         
-        // 显示整辆车的总数
         document.getElementById('total-val').innerText = truckTotal;
         
-        // 显示当前客户的规格统计
         Object.keys(map).forEach(spec => {
             const div = document.createElement('div');
             div.className = 'stat-pill';
@@ -621,19 +733,14 @@
     }
 
     function saveState() {
-        const currentTruck = getCurrentTruck();
-        currentTruck.session.plate = document.getElementById('plate').value;
         localStorage.setItem('wh_v4_data', JSON.stringify(data));
         
-        // 支持多人同时使用 - 使用localStorage同步（简单实现）
-        // 实际生产环境建议使用Firebase等实时数据库
         if ('BroadcastChannel' in window) {
             const channel = new BroadcastChannel('truck_loading_tool');
             channel.postMessage({ type: 'UPDATE', data: data });
         }
     }
 
-    // 监听其他窗口的更新
     if ('BroadcastChannel' in window) {
         const channel = new BroadcastChannel('truck_loading_tool');
         channel.onmessage = (event) => {
@@ -644,7 +751,6 @@
         };
     }
 
-    // 配置与导出
     function openConfig() {
         document.getElementById('cfg-source').value = data.sources.join(',');
         document.getElementById('cfg-spec').value = data.specs.join(',');
@@ -664,7 +770,6 @@
         if (s1.length && s2.length) {
             data.sources = s1;
             data.specs = s2;
-            // 修正所有车辆的当前选择
             data.trucks.forEach(truck => {
                 if (!s1.includes(truck.session.selSource)) truck.session.selSource = s1[0];
                 if (!s2.includes(truck.session.selSpec)) truck.session.selSpec = s2[0];
@@ -683,7 +788,14 @@
     function exportData() {
         const currentTruck = getCurrentTruck();
         let csv = "\uFEFF时间,客户,车牌,农户,规格,数量,托盘序号\n";
-        currentTruck.logs.forEach(l => {
+        let allLogs = [];
+        currentTruck.customers.forEach(customer => {
+            customer.logs.forEach(l => {
+                allLogs.push(l);
+            });
+        });
+        allLogs.sort((a, b) => new Date(b.iso) - new Date(a.iso));
+        allLogs.forEach(l => {
             csv += `${l.iso},${l.cust},${l.plate},${l.source},${l.spec},${l.qty},${l.palletNumber}\n`;
         });
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -699,7 +811,6 @@
     function resetTruck() {
         const currentTruck = getCurrentTruck();
         if (confirm("【警告】\n将清空所有计数，开启新车任务。\n请确认已导出数据！")) {
-            // 重置车辆数据
             currentTruck.customers = [{
                 id: "cust_" + Date.now(),
                 name: "",
@@ -707,8 +818,6 @@
             }];
             currentTruck.session.plate = "";
             currentTruck.session.currentCustomerIndex = 0;
-            document.getElementById('plate').value = "";
-            document.getElementById('cust').value = "";
             saveState();
             renderUI();
             closeConfig();
@@ -716,10 +825,8 @@
         }
     }
 
-    // 触摸事件优化
     document.addEventListener('touchstart', function() {}, { passive: true });
 
-    // 初始化应用
     init();
 </script>
 </body>
