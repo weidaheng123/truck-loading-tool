@@ -16,7 +16,7 @@
         
         .truck-switcher, .customer-switcher { display: flex; gap: calc(8px * var(--scale)); margin-bottom: calc(10px * var(--scale)); overflow-x: auto; scrollbar-width: none; }
         .truck-switcher::-webkit-scrollbar, .customer-switcher::-webkit-scrollbar { display: none; }
-        .truck-tab, .customer-tab { background: #37474F; border: 1px solid #455A64; color: #fff; padding: calc(8px * var(--scale)) calc(12px * var(--scale)); border-radius: 20px; font-size: calc(0.8rem * var(--scale)); white-space: nowrap; cursor: pointer; transition: all 0.2s; }
+        .truck-tab, .customer-tab { background: #37474F; border: 1px solid #455A64; color: #fff; padding: calc(8px * var(--scale)) calc(12px * var(--scale)); border-radius: 20px; font-size: calc(1.04rem * var(--scale)); white-space: nowrap; cursor: pointer; transition: all 0.2s; }
         .truck-tab.active { background: var(--primary); border-color: var(--primary); font-weight: bold; }
         .customer-tab.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: bold; }
         .truck-tab.new, .customer-tab.new { background: #1b5e20; border-color: var(--success); }
@@ -28,15 +28,15 @@
         .stat-num { color: var(--accent); font-weight: bold; font-size: calc(1.2rem * var(--scale)); }
 
         .section { background: var(--panel); margin: calc(12px * var(--scale)); padding: calc(15px * var(--scale)); border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        .section-title { color: #90A4AE; font-size: calc(0.9rem * var(--scale)); margin-bottom: calc(12px * var(--scale)); text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; }
+        .section-title { color: #90A4AE; font-size: calc(1.17rem * var(--scale)); margin-bottom: calc(12px * var(--scale)); text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; }
         
         .grid-container { display: grid; grid-template-columns: repeat(5, 1fr); gap: calc(4px * var(--scale)); }
-        .select-btn { background: #2c2c2c; border: 1px solid #444; color: #bbb; padding: calc(5px * var(--scale)) calc(3px * var(--scale)); border-radius: 4px; text-align: center; font-size: calc(0.75rem * var(--scale)); cursor: pointer; transition: all 0.1s; display: flex; align-items: center; justify-content: center; min-height: calc(24px * var(--scale)); word-break: break-all; line-height: 1.1; font-weight: bold; }
+        .select-btn { background: #2c2c2c; border: 1px solid #444; color: #bbb; padding: calc(5px * var(--scale)) calc(3px * var(--scale)); border-radius: 4px; text-align: center; font-size: calc(0.975rem * var(--scale)); cursor: pointer; transition: all 0.1s; display: flex; align-items: center; justify-content: center; min-height: calc(24px * var(--scale)); word-break: break-all; line-height: 1.1; font-weight: bold; }
         .select-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); font-weight: bold; transform: scale(1.02); box-shadow: 0 4px 10px rgba(41, 98, 255, 0.3); }
 
         .qty-wrapper { display: flex; align-items: center; gap: calc(10px * var(--scale)); }
-        .qty-screen { flex: 1; background: #000; color: var(--success); font-family: monospace; font-size: calc(2.8rem * var(--scale)); text-align: center; border-radius: 10px; padding: calc(8px * var(--scale)); border: 1px solid #333; font-weight: bold; letter-spacing: -1px; }
-        .numpad { display: grid; grid-template-columns: 1fr 1fr; gap: calc(10px * var(--scale)); width: calc(150px * var(--scale)); }
+        .qty-screen { flex: 3; background: #000; color: var(--success); font-family: monospace; font-size: calc(2.8rem * var(--scale)); text-align: center; border-radius: 10px; padding: calc(8px * var(--scale)); border: 1px solid #333; font-weight: bold; letter-spacing: -1px; }
+        .numpad { flex: 2; display: grid; grid-template-columns: 1fr 1fr; gap: calc(10px * var(--scale)); }
         .num-btn { background: #333; border: 1px solid #444; color: #fff; padding: calc(14px * var(--scale)); border-radius: 8px; font-size: calc(1.1rem * var(--scale)); font-weight: bold; cursor: pointer; }
         .num-btn:active { background: #555; }
 
@@ -66,7 +66,6 @@
         @media (max-width: 480px) {
             .qty-screen { font-size: calc(2.2rem * var(--scale)); }
             .main-btn { font-size: calc(1.3rem * var(--scale)); }
-            .numpad { width: calc(130px * var(--scale)); }
         }
         
         .loading { opacity: 0.6; pointer-events: none; }
@@ -671,13 +670,13 @@
             li.setAttribute('data-pallet', log.palletNumber);
             li.innerHTML = `
                 <div>
-                    <div style="font-size:0.8rem; color:#888">${log.timeStr} - ${log.source}</div>
-                    <div style="font-size:1rem; font-weight:bold; color:#fff">${log.spec}</div>
+                    <div style="font-size:1.04rem; color:#888">${log.timeStr} - ${log.source}</div>
+                    <div style="font-size:1.3rem; font-weight:bold; color:#fff">${log.spec}</div>
                 </div>
                 <div style="display:flex; align-items:center; gap:10px;">
-                    <span style="font-size:0.8rem; color:#888; margin-right:10px;">托盘 ${log.palletNumber}</span>
-                    <span style="font-size:1.2rem; color:${i===0?'#fff':'#ccc'}">x${log.qty}</span>
-                    <span onclick="delLog(${log.id})" style="color:#555; font-size:1.5rem; cursor:pointer;">×</span>
+                    <span style="font-size:1.04rem; color:#888; margin-right:10px;">托盘 ${log.palletNumber}</span>
+                    <span style="font-size:1.56rem; color:${i===0?'#fff':'#ccc'}">x${log.qty}</span>
+                    <span onclick="delLog(${log.id})" style="color:#555; font-size:1.95rem; cursor:pointer;">×</span>
                 </div>
             `;
             el.appendChild(li);
