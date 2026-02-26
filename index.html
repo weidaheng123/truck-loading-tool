@@ -625,12 +625,26 @@
         sub.innerText = `${currentTruck.session.qty}箱 · ${currentTruck.session.selSpec} · ${currentTruck.session.selSource}`;
     }
 
+    function speak(text) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'zh-CN';
+            utterance.rate = 1.1; // 稍微快一点
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
     function commit() {
         const currentTruck = getCurrentTruck();
         const currentCustomer = getCurrentCustomer();
         const plate = currentTruck.session.plate || "未知车牌";
         
-        if (currentTruck.session.qty <= 0) return alert("数量必须大于0");
+        if (currentTruck.session.qty <= 0) {
+            speak("错误，数量不能为零");
+            alert("数量必须大于0");
+            return;
+        }
 
         const btn = document.querySelector('.main-btn');
         btn.classList.add('loading');
@@ -651,6 +665,9 @@
         currentCustomer.logs.unshift(log);
         saveState();
         renderUI();
+        
+        // 语音播报
+        speak(`${log.source}，${log.spec}，${log.qty}箱`);
         
         if(navigator.vibrate) navigator.vibrate(100);
         btn.style.background = '#00E676';
@@ -676,24 +693,67 @@
                 <div style="display:flex; align-items:center; gap:10px;">
                     <span style="font-size:1.04rem; color:#888; margin-right:10px;">托盘 ${log.palletNumber}</span>
                     <span style="font-size:1.56rem; color:${i===0?'#fff':'#ccc'}">x${log.qty}</span>
-                    <span onclick="delLog(${log.id})" style="color:#555; font-size:1.95rem; cursor:pointer;">×</span>
+                    <button class="delete-log-btn" data-id="${log.id}" style="background:none; border:none; color:#ff5252; font-size:1.5rem; cursor:pointer; padding:5px; border-radius:5px; transition: background 0.3s; touch-action: none;">🗑️</button>
                 </div>
             `;
             el.appendChild(li);
+        });
+
+        // 绑定长按事件
+        document.querySelectorAll('.delete-log-btn').forEach(btn => {
+            let pressTimer;
+            let longPressed = false;
+            
+            const startPress = (e) => {
+                e.preventDefault(); // 防止默认行为和文本选择
+                btn.style.background = 'rgba(255, 82, 82, 0.3)';
+                if(navigator.vibrate) navigator.vibrate(20);
+                longPressed = false;
+                
+                pressTimer = window.setTimeout(() => {
+                    longPressed = true;
+                    btn.style.background = 'none';
+                    if(navigator.vibrate) navigator.vibrate([50, 50, 50]);
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    delLog(id);
+                }, 800);
+            };
+
+            const endPress = (e) => {
+                clearTimeout(pressTimer);
+                btn.style.background = 'none';
+                if (!longPressed && e.type !== 'touchcancel' && e.type !== 'mouseleave') {
+                    // 这是普通的短按点击
+                    speak("请长按删除");
+                    alert("⚠️ 请长按垃圾篓图标 1 秒进行删除，防止误触。");
+                }
+            };
+
+            btn.addEventListener('touchstart', startPress, { passive: false });
+            btn.addEventListener('touchend', endPress);
+            btn.addEventListener('touchcancel', () => clearTimeout(pressTimer));
+            
+            // 兼容电脑端鼠标测试
+            btn.addEventListener('mousedown', startPress);
+            btn.addEventListener('mouseup', endPress);
+            btn.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+            
+            // 禁用原生 click 避免冲突
+            btn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); });
         });
     }
 
     function delLog(id) {
         const currentCustomer = getCurrentCustomer();
-        if(confirm("删除这条记录？")) {
-            currentCustomer.logs = currentCustomer.logs.filter(l => l.id !== id);
-            currentCustomer.logs.forEach((log, index) => {
-                log.palletNumber = currentCustomer.logs.length - index;
-            });
-            saveState();
-            renderUI();
-            if(navigator.vibrate) navigator.vibrate(50);
-        }
+        // 既然已经有了长按 800ms 防误触，就直接执行删除，不再多一次 confirm 弹窗打断操作流
+        currentCustomer.logs = currentCustomer.logs.filter(l => l.id !== id);
+        currentCustomer.logs.forEach((log, index) => {
+            log.palletNumber = currentCustomer.logs.length - index;
+        });
+        saveState();
+        renderUI();
+        speak("记录已删除");
+        if(navigator.vibrate) navigator.vibrate([100, 50, 100]); // 强烈震动反馈
     }
 
     function renderStats() {
@@ -808,7 +868,9 @@
 
     function resetTruck() {
         const currentTruck = getCurrentTruck();
-        if (confirm("【警告】\n将清空所有计数，开启新车任务。\n请确认已导出数据！")) {
+        const code = prompt("【危险操作】\n这会清空当前车辆的所有装车数据。\n如果你确认已导出，请输入确认码 '123' 继续：");
+        
+        if (code === "123") {
             currentTruck.customers = [{
                 id: "cust_" + Date.now(),
                 name: "",
@@ -819,7 +881,10 @@
             saveState();
             renderUI();
             closeConfig();
-            if(navigator.vibrate) navigator.vibrate(100);
+            speak("车辆已清空");
+            if(navigator.vibrate) navigator.vibrate([200, 100, 200]);
+        } else if (code !== null) {
+            alert("确认码错误，操作已取消。");
         }
     }
 
