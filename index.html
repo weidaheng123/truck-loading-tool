@@ -833,19 +833,19 @@
             div.style.gap = '4px';
             div.style.minWidth = '120px';
             
-            // 构造下级明细字符串
+            // 构造下级明细字符串（竖排）
             let childStrs = [];
             Object.keys(group.children).forEach(cKey => {
-                childStrs.push(`${cKey} <span style="color:#aaa">${group.children[cKey]}</span>`);
+                childStrs.push(`<div style="padding: 2px 0;">${cKey} <span style="color:#aaa; float: right; padding-left: 10px;">${group.children[cKey]}</span></div>`);
             });
-            let childHtml = childStrs.join('<span style="color:#555; margin:0 4px;">|</span>');
+            let childHtml = childStrs.join('');
             
             div.innerHTML = `
                 <div style="display:flex; justify-content:space-between; width:100%; border-bottom:1px solid #546E7A; padding-bottom:4px; margin-bottom:2px;">
                     <span style="color:#fff; font-weight:bold; font-size:1rem;">${pKey}</span>
                     <span class="stat-num" style="margin-left:15px; font-size:1.1rem;">${group.total}</span>
                 </div>
-                <div style="font-size:0.8rem; color:#b0bec5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">
+                <div style="font-size:0.9rem; color:#b0bec5; width:100%; display: flex; flex-direction: column;">
                     ${childHtml}
                 </div>
             `;
